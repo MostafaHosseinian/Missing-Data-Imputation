@@ -1,0 +1,496 @@
+---
+title: "Imputation Study"
+author: "Seyed Mostafa Hosseinian"
+date: "02/04/2021"
+output: html_document
+---
+
+
+# import libraries and packages
+
+```{r echo=TRUE}
+library(missForest)
+library(mice)
+library(faraway)
+library(ggplot2)
+library(ggpubr)
+```
+
+
+# import data sets
+
+# First data set
+
+```{r echo=TRUE}
+data("hprice")
+hprice <- hprice[c(-7,-8)]  # Two set of indicators are removed
+summary(hprice)
+dim(hprice)
+```
+
+
+# Second data set
+
+```{r echo=TRUE}
+data(iris)
+summary(iris)
+dim(iris)
+```
+
+
+# Third data set
+
+```{r echo=TRUE}
+data("imports85")
+summary(imports85)
+dim(imports85)
+```
+
+
+
+#  1. hprice
+
+## Amputation procedure (10% amputation)
+
+```{r echo=TRUE}
+set.seed(0)
+hprice.mis1 <- prodNA(hprice, noNA = 0.10)
+summary(hprice.mis1)
+```
+
+
+## missForest
+
+```{r echo=TRUE}
+set.seed(0)
+hprice.imp1 <- missForest(hprice.mis1, verbose = TRUE)
+hprice.imp1$OOBerror
+
+hprice.imputed1 <- hprice.imp1$ximp
+summary(hprice.imputed1)
+```
+
+
+## MICE
+
+```{r echo=TRUE}
+set.seed(0)
+hprice.imp1.mice <- mice(hprice.mis1)
+hprice.imputed1.mice <- complete(hprice.imp1.mice, action = 1L)
+
+# Imputation Error
+(imp.err1.hp <- mixError(hprice.imputed1.mice, hprice.mis1, hprice))
+```
+
+
+## Amputation procedure (20% amputation)
+
+```{r echo=TRUE}
+set.seed(0)
+hprice.mis2 <- prodNA(hprice, noNA = 0.2)
+summary(hprice.mis2)
+```
+
+
+## missForest
+
+```{r echo=TRUE}
+set.seed(0)
+hprice.imp2 <- missForest(hprice.mis2, verbose = TRUE)
+hprice.imp2$OOBerror
+
+hprice.imputed2 <- hprice.imp2$ximp
+summary(hprice.imputed2)
+```
+
+
+## MICE
+
+```{r echo=TRUE}
+set.seed(0)
+hprice.imp2.mice <- mice(hprice.mis2)
+hprice.imputed2.mice <- complete(hprice.imp2.mice, action = 1L)
+
+# Imputation Error
+(imp.err2.hp <- mixError(hprice.imputed2.mice, hprice.mis2, hprice))
+```
+
+
+## Amputation procedure (30% amputation)
+
+```{r echo=TRUE}
+set.seed(0)
+hprice.mis3 <- prodNA(hprice, noNA = 0.3)
+summary(hprice.mis3)
+```
+
+
+## missForest
+
+```{r echo=TRUE}
+set.seed(0)
+hprice.imp3 <- missForest(hprice.mis3, verbose = TRUE)
+hprice.imp3$OOBerror
+
+hprice.imputed3 <- hprice.imp3$ximp
+summary(hprice.imputed3)
+```
+
+
+
+## MICE
+
+```{r echo=TRUE}
+set.seed(0)
+hprice.imp3.mice <- mice(hprice.mis3)
+hprice.imputed3.mice <- complete(hprice.imp3.mice, action = 1L)
+
+# Imputation Error
+(imp.err3.hp <- mixError(hprice.imputed3.mice, hprice.mis3, hprice))
+```
+
+
+
+# 2. iris
+
+## Amputation procedure (10% amputation)
+
+```{r echo=TRUE}
+set.seed(0)
+iris.mis1 <- prodNA(iris, noNA = 0.1)
+summary(iris.mis1)
+```
+
+
+## missForest
+
+```{r echo=TRUE}
+set.seed(0)
+iris.imp1 <- missForest(iris.mis1, verbose = TRUE)
+iris.imp1$OOBerror
+
+iris.imputed1 <- iris.imp1$ximp
+summary(iris.imputed1)
+```
+
+
+## MICE
+
+```{r echo=TRUE}
+set.seed(0)
+iris.imp1.mice <- mice(iris.mis1)
+iris.imputed1.mice <- complete(iris.imp1.mice, action = 1L)
+
+# Imputation Error
+(imp.err1.ir <- mixError(iris.imputed1.mice, iris.mis1, iris))
+```
+
+
+## Amputation procedure (20% amputation)
+
+```{r echo=TRUE}
+set.seed(0)
+iris.mis2 <- prodNA(iris, noNA = 0.2)
+summary(iris.mis2)
+```
+
+
+## missForest
+
+```{r echo=TRUE}
+set.seed(0)
+iris.imp2 <- missForest(iris.mis2, verbose = TRUE)
+iris.imp2$OOBerror
+
+iris.imputed2 <- iris.imp2$ximp
+summary(iris.imputed2)
+```
+
+
+## MICE
+
+```{r echo=TRUE}
+set.seed(0)
+iris.imp2.mice <- mice(iris.mis2)
+iris.imputed2.mice <- complete(iris.imp2.mice, action = 1L)
+
+# Imputation Error
+(imp.err2.ir <- mixError(iris.imputed2.mice, iris.mis2, iris))
+```
+
+
+## Amputation procedure (30% amputation)
+
+```{r echo=TRUE}
+set.seed(0)
+iris.mis3 <- prodNA(iris, noNA = 0.3)
+summary(iris.mis3)
+```
+
+
+## missForest
+
+```{r echo=TRUE}
+set.seed(0)
+iris.imp3 <- missForest(iris.mis3, verbose = TRUE)
+iris.imp3$OOBerror
+
+iris.imputed3 <- iris.imp3$ximp
+summary(iris.imputed3)
+```
+
+
+## MICE
+
+```{r echo=TRUE}
+set.seed(0)
+iris.imp3.mice <- mice(iris.mis3)
+iris.imputed3.mice <- complete(iris.imp3.mice, action = 1L)
+
+# Imputation Error
+(imp.err3.ir <- mixError(iris.imputed3.mice, iris.mis3, iris))
+```
+
+
+
+# 3. import85
+
+## Amputation procedure (10% amputation)
+
+```{r echo=TRUE}
+set.seed(0)
+import.mis1 <- prodNA(imports85, noNA = 0.1)
+summary(import.mis1)
+```
+
+
+## missForest
+
+```{r echo=TRUE}
+set.seed(0)
+import.imp1 <- missForest(import.mis1, verbose = TRUE)
+import.imp1$OOBerror
+
+import.imputed1 <- import.imp1$ximp
+summary(import.imputed1)
+```
+
+
+## MICE
+
+```{r echo=TRUE}
+set.seed(0)
+import.imp1.mice <- mice(import.mis1, m = 1)
+import.imputed1.mice <- complete(import.imp1.mice, action = 1L)
+
+# Imputation Error
+(imp.err1.im <- mixError(import.imputed1.mice, import.mis1, imports85))
+```
+
+
+## Amputation procedure (20% amputation)
+
+```{r echo=TRUE}
+set.seed(0)
+import.mis2 <- prodNA(imports85, noNA = 0.2)
+summary(import.mis2)
+```
+
+
+## missForest
+
+```{r echo=TRUE}
+set.seed(0)
+import.imp2 <- missForest(import.mis2, verbose = TRUE)
+import.imp2$OOBerror
+
+import.imputed2 <- import.imp2$ximp
+summary(import.imputed2)
+```
+
+
+## MICE
+
+```{r echo=TRUE}
+set.seed(0)
+import.imp2.mice <- mice(import.mis2, m = 1)
+import.imputed2.mice <- complete(import.imp2.mice, action = 1L)
+
+# Imputation Error
+(imp.err2.im <- mixError(import.imputed2.mice, import.mis2, imports85))
+```
+
+
+## Amputation procedure (30% amputation)
+
+```{r echo=TRUE}
+set.seed(0)
+import.mis3 <- prodNA(imports85, noNA = 0.3)
+summary(import.mis3)
+```
+
+
+## missForest
+
+```{r echo=TRUE}
+set.seed(0)
+import.imp3 <- missForest(import.mis3, verbose = TRUE)
+import.imp3$OOBerror
+
+import.imputed3 <- import.imp3$ximp
+summary(import.imputed3)
+```
+
+
+## MICE
+
+```{r echo=TRUE}
+set.seed(0)
+import.imp3.mice <- mice(import.mis3, m = 1)
+import.imputed3.mice <- complete(import.imp3.mice, action = 1L)
+
+# Imputation Error
+(imp.err3.im <- mixError(import.imputed3.mice, import.mis3, imports85))
+```
+
+
+
+
+
+# Evaluation
+
+## 1. missForest
+
+```{r echo=TRUE}
+# NRMSE comparison
+values1 <- c(hprice.imp1$OOBerror[1], iris.imp1$OOBerror[1],import.imp1$OOBerror[1],hprice.imp2$OOBerror[1],iris.imp2$OOBerror[1],import.imp2$OOBerror[1],hprice.imp3$OOBerror[1],iris.imp3$OOBerror[1],import.imp3$OOBerror[1])
+set1 <- rep(c("hprice", "iris", "import85"), 3)
+percentage <- c("10%", "10%", "10%", "20%", "20%", "20%", "30%", "30%", "30%")
+data1 <- data.frame(values1, set1, percentage)
+
+values2 <- c(hprice.imp1$OOBerror[2], iris.imp1$OOBerror[2],import.imp1$OOBerror[2],hprice.imp2$OOBerror[2],iris.imp2$OOBerror[2],import.imp2$OOBerror[2],hprice.imp3$OOBerror[2],iris.imp3$OOBerror[2],import.imp3$OOBerror[2])
+set2 <- rep(c("hprice", "iris", "import85"), 3)
+data2 <- data.frame(values2, set2, percentage)
+
+
+# plot
+p1 <- ggplot(data1, aes(x = set1, y = values1, fill = percentage)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  geom_text(aes(label=round(values1, 4)),vjust=-0.5, size=3, position=position_dodge(0.9)) +
+  ylim(c(0,0.2)) +
+  xlab("") +
+  ylab("NRMSE")
+
+p2 <- ggplot(data2, aes(x = set2, y = values2, fill = percentage)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  geom_text(aes(label=round(values2, 4)),vjust=-0.5, size=3, position=position_dodge(0.9)) +
+  ylim(c(0,0.2)) +
+  xlab("Data sets") +
+  ylab("PFC")
+
+ggarrange(p1, p2, labels = c("NRMSE", "PFC"), ncol = 1, nrow = 2)
+```
+
+
+## 2. missForest vs. MICE
+
+```{r echo=TRUE}
+# 10%
+values1.compar <- c(hprice.imp1$OOBerror[1],iris.imp1$OOBerror[1],import.imp1$OOBerror[1],imp.err1.hp[1], imp.err1.ir[1],imp.err1.im[1])
+
+df.10perc <- data.frame(values1.compar, sets = rep(c("hprice", "iris", "import85"), 2), alg. = c(rep("missForest",3),rep("MICE", 3)))
+
+# 20%
+values2.compar <- c(hprice.imp2$OOBerror[1],iris.imp2$OOBerror[1],import.imp2$OOBerror[1],imp.err2.hp[1], imp.err2.ir[1],imp.err2.im[1])
+
+df.20perc <- data.frame(values2.compar, sets = rep(c("hprice", "iris", "import85"), 2), alg. = c(rep("missForest",3),rep("MICE", 3)))
+
+# 30%
+values3.compar <- c(hprice.imp3$OOBerror[1],iris.imp3$OOBerror[1],import.imp3$OOBerror[1],imp.err3.hp[1], imp.err3.ir[1],imp.err3.im[1])
+
+df.30perc <- data.frame(values3.compar, sets = rep(c("hprice", "iris", "import85"), 2), alg. = c(rep("missForest",3),rep("MICE", 3)))
+
+
+
+# NRMSE plots
+p.10perc <- ggplot(df.10perc, aes(x = sets, y = values1.compar, fill = alg.)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  geom_text(aes(label=round(values1.compar, 4)),
+            vjust=-0.5, size=3, position=position_dodge(0.9)) +
+  ylim(c(0,0.3)) +
+  xlab("") +
+  ylab("NRMSE")
+
+p.20perc <- ggplot(df.20perc, aes(x = sets, y = values2.compar, fill = alg.)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  geom_text(aes(label=round(values2.compar, 4)),
+            vjust=-0.5, size=3, position=position_dodge(0.9)) +
+  ylim(c(0,0.3)) +
+  xlab("") +
+  ylab("NRMSE")
+
+p.30perc <- ggplot(df.30perc, aes(x = sets, y = values3.compar, fill = alg.)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  geom_text(aes(label=round(values3.compar, 4)),
+            vjust=-0.5, size=3, position=position_dodge(0.9)) +
+  ylim(c(0,0.3)) +
+  xlab("") +
+  ylab("NRMSE")
+
+ggarrange(p.10perc, p.20perc, p.30perc, labels = c("10%", "20%", "30%"), ncol = 1, nrow = 3)
+```
+
+
+
+```{r echo=TRUE}
+# 10%
+values1.compar.p <- c(hprice.imp1$OOBerror[2],iris.imp1$OOBerror[2],import.imp1$OOBerror[2],imp.err1.hp[2], imp.err1.ir[2],imp.err1.im[2])
+
+df.10perc.p <- data.frame(values1.compar.p, sets = rep(c("hprice", "iris", "import85"), 2), alg. = c(rep("missForest",3),rep("MICE", 3)))
+
+# 20%
+values2.compar.p <- c(hprice.imp2$OOBerror[2],iris.imp2$OOBerror[2],import.imp2$OOBerror[2],imp.err2.hp[2], imp.err2.ir[2],imp.err2.im[2])
+
+df.20perc.p <- data.frame(values2.compar.p, sets = rep(c("hprice", "iris", "import85"), 2), alg. = c(rep("missForest",3),rep("MICE", 3)))
+
+# 30%
+values3.compar.p <- c(hprice.imp3$OOBerror[2],iris.imp3$OOBerror[2],import.imp3$OOBerror[2],imp.err3.hp[2], imp.err3.ir[2],imp.err3.im[2])
+
+df.30perc.p <- data.frame(values3.compar.p, sets = rep(c("hprice", "iris", "import85"), 2), alg. = c(rep("missForest",3),rep("MICE", 3)))
+
+
+
+# PFC plots
+p.10perc.p <- ggplot(df.10perc.p, aes(x = sets, y = values1.compar.p, fill = alg.)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  geom_text(aes(label=round(values1.compar.p, 4)),
+            vjust=-0.5, size=3, position=position_dodge(0.9)) +
+  ylim(c(0,0.4)) +
+  xlab("") +
+  ylab("PFC")
+
+p.20perc.p <- ggplot(df.20perc, aes(x = sets, y = values2.compar.p, fill = alg.)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  geom_text(aes(label=round(values2.compar.p, 4)),
+            vjust=-0.5, size=3, position=position_dodge(0.9)) +
+  ylim(c(0,0.4)) +
+  xlab("") +
+  ylab("PFC")
+
+p.30perc.p <- ggplot(df.30perc, aes(x = sets, y = values3.compar.p, fill = alg.)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  geom_text(aes(label=round(values3.compar.p, 4)),
+            vjust=-0.5, size=3, position=position_dodge(0.9)) +
+  ylim(c(0,0.4)) +
+  xlab("") +
+  ylab("PFC")
+
+ggarrange(p.10perc.p, p.20perc.p, p.30perc.p, labels = c("10%", "20%", "30%"), ncol = 1, nrow = 3)
+```
+
+
+
+
+
+
+
